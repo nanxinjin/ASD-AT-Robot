@@ -24,10 +24,39 @@ def respond_to_answers():
 		print('you can say something now')
 		audio = r.listen(source)
 		transcript = r.recognize_google(audio)
+		print(transcript)
 
 		return transcript		
 
-def red_cube_game(robot):
+
+#random select cube color
+def cube_random_color_generate():
+	cube_color_option = ["cube_red", "cube_yellow", "cube_green", "cube_cyan", "cube_blue", "cube_purple", "cube_white"]
+	cube_color_select = random.choice(cube_color_option)
+
+	if cube_color_select == "cube_red" :
+		print("Random color of cube is: ", cube_color_select)
+		return lights.red_light, "cube_red"
+	elif cube_color_select == "cube_yellow" :
+		print("Random color of cube is: ", cube_color_select)
+		return lights.yellow_light, "cube_yellow"
+	elif cube_color_select == "cube_green" :
+		print("Random color of cube is: ", cube_color_select)
+		return lights.green_light, "cube_green"
+	elif cube_color_select == "cube_cyan" :
+		print("Random color of cube is: ", cube_color_select)
+		return lights.cyan_light, "cube_cyan"
+	elif cube_color_select == "cube_blue" :
+		print("Random color of cube is: ", cube_color_select)
+		return lights.blue_light, "cube_blue"
+	elif cube_color_select == "cube_purple" : 
+		print("Random color of cube is: ", cube_color_select)
+		return lights.magenta_light, "cube_purple"
+	elif cube_color_select == "cube_white" :
+		print("Random color of cube is: ", cube_color_select)
+		return lights.white_light, "cube_white"
+
+def color_cube_game(robot):
 	print('connecting to the cube')
 	while not robot.world.connected_light_cube:
 		print('No cube Yet...')
@@ -35,23 +64,53 @@ def red_cube_game(robot):
 	print('Connected')
 
 	cube = robot.world.connected_light_cube
-	colors = [lights.red_light,
-			lights.yellow_light,
-			lights.green_light,
-			lights.cyan_light,
-			lights.blue_light,
-			lights.magenta_light]
-
+	cube_color, color_label = cube_random_color_generate()
+	print("Cube color for this game is: ", color_label)
+	#show color on the cube
+	show_color(cube, cube_color)
 	while(True):
-		show_color(cube, lights.red_light)
-		# ask a question
 		say_words(robot, "What is the color of this cube?")
-		respond = respond_to_answers()
-		if 'red' in respond:
-			say_words(robot, "good job!")
-			break
+		if color_label == "cube_red":
+		#	show_color(cube, lights.red_light)
+			# user voice input for the question	
+			respond = respond_to_answers()
+			if 'red' in respond or 'rabbit' in respond or 'rather' in respond or 'ride' in respond or 'rat' in respond:
+				say_words(robot, "good job!")
+				break
+		elif color_label == "cube_yellow" :
+			respond = respond_to_answers()
+			if 'yellow' in respond:
+				say_words(robot, "good job!")
+				break
+		elif color_label == "cube_green" :
+			respond = respond_to_answers()
+			if 'green' in respond:
+				say_words(robot, "good job!")
+				break
+		elif color_label == "cube_cyan" :
+			respond = respond_to_answers()
+			if 'cyan' in respond:
+				say_words(robot, "good job!")
+				break
+		elif color_label == "cube_blue" :
+			respond = respond_to_answers()
+			if 'blue' in respond:
+				say_words(robot, "good job!")
+				break
+		elif color_label == "purple" :
+			respond = respond_to_answers()
+			if 'purple' in respond or 'pink' in respond:
+				say_words(robot, "good job!")
+				break
+		elif color_label == "cube_white" :
+			respond = respond_to_answers()
+			if 'white' in respond:
+				say_words(robot, "good job!")
+				break
+
 		else:
 			say_words(robot, "Maybe not. Try again!")
+
 
 	print('going to pick up cube')
 	robot.behavior.drive_off_charger()
@@ -183,7 +242,8 @@ def main():
 	# with anki_vector.Robot(default_logging=False, show_viewer=True, show_3d_viewer=True, enable_nav_map_feed=True) as robot:
 	with anki_vector.Robot(args.serial) as robot:
 		# define red cube game
-		red_cube_game(robot)
+		cube_random_color_generate()
+		color_cube_game(robot)
 
 		# move robot
 		#motor_move(robot)

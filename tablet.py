@@ -1,6 +1,7 @@
 import tkinter as tk
 from PIL import ImageTk, Image
 import anki_vector
+from tkmacosx import Button
 
 index = 0
 img_name = ["you", "go", "stop", "want", "I", "it", "more", "not", "like"]
@@ -38,6 +39,8 @@ def speak(label):
     with anki_vector.Robot(args.serial) as robot:
         stext = label.cget("text")
         robot.behavior.say_text(stext[17:])
+        stext = 'vector will say: '
+        label.config(text=stext)
 
 
 def app():
@@ -61,19 +64,33 @@ def app():
     panel.image = img
 
     # place buttons
-    prev_button = tk.Button(window, text="Previous", width=8,
-                            height=2, command=lambda: prev(panel))
-    prev_button.pack(in_=top, side="left")
-    panel.pack(in_=top, fill="both", expand="yes", side="left")
-    next_button = tk.Button(window, text="Next", width=8,
-                            height=2, command=lambda: next(panel))
-    next_button.pack(in_=top, side="left")
-    sele_button = tk.Button(window, text="Select", width=10,
-                            height=2, command=lambda: select(slabel))
-    sele_button.pack(in_=bottom, side="left")
-    speak_button = tk.Button(window, text="Speak", width=10,
-                             height=2, command=lambda: speak(slabel))
-    speak_button.pack(in_=bottom, side="right")
+    # prev_button = tk.Button(window, text="Previous", width=8,
+    #                         height=2, command=lambda: prev(panel))
+    # prev_button.pack(in_=top, side="left")
+    # panel.pack(in_=top, fill="both", expand="yes", side="left")
+    prev_button = Button(window, text='Previous', width=80, height=20, command=lambda: prev(panel))
+    prev_button.pack(in_=top, side='left')
+    panel.pack(in_=top, fill='both', expand='yes', side='left')
+
+
+    # next_button = tk.Button(window, text="Next", width=8,
+    #                         height=2, command=lambda: next(panel))
+    # next_button.pack(in_=top, side="left")
+    next_button = Button(window, text='Next', width=80, height=20, command=lambda: next(panel))
+    next_button.pack(in_=top, side='right')
+
+    # sele_button = tk.Button(window, text="Select", width=10,
+    #                         height=2, command=lambda: select(slabel))
+    # sele_button.pack(in_=bottom, side="left")
+    sele_button = Button(window, text='Select', width=80, height=20, command=lambda: select(slabel))
+    sele_button.pack(in_=bottom, side='left')
+
+    # speak_button = tk.Button(window, text="Speak", width=10,
+    #                          height=2, command=lambda: speak(slabel))
+    # speak_button.pack(in_=bottom, side="right")
+    speak_button = Button(window, text='Speak', width=80, height=20, command=lambda: speak(slabel))
+    speak_button.pack(in_=bottom, side='right')
+
     # Start the GUI
     window.mainloop()
 
